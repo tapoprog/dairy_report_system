@@ -5,7 +5,9 @@
     <c:param name="content">
         <c:choose>
             <c:when test="${employee != null}">
-                <h2>id : ${employee.id} の従業員情報　詳細ページ</h2>
+                <h2>
+                    id : ${employee.id} の従業員情報　詳細ページ
+                </h2>
 
                 <table>
                     <tbody>
@@ -36,6 +38,28 @@
                             <th>更新日時</th>
                             <td>
                                 <fmt:formatDate value="${employee.updated_at}" pattern="yyyy-MM-dd HH:mm:ss" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <c:choose>
+                                    <c:when test = "${follows_count > 0}">
+                                        <form method="POST" action="<c:url value='/follows/destroy' />">
+                                            <button type="submit">フォロー中</button>
+                                        </form>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <form method="POST" action="<c:url value='/follows/create' />">
+                                            <input type="hidden" name="employeeId" value="${employee.id}" />
+                                            <input type="hidden" name="_token" value="${_token}" />
+                                            <button type="submit">フォロー</button>
+                                         </form>
+                                     </c:otherwise>
+                                 </c:choose>
+                            </th>
+                            <td>
+                                <a href="<c:url value='/follows/index' />">フォローリスト</a>
+                                /<a href="<c:url value='/followers/index' />">フォロワーリスト</a>
                             </td>
                         </tr>
                     </tbody>
