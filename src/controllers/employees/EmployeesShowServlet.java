@@ -3,6 +3,7 @@ package controllers.employees;
 import java.io.IOException;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.Employee;
+import models.Follow;
 import utils.DBUtil;
 
 
@@ -31,16 +33,22 @@ public class EmployeesShowServlet extends HttpServlet {
 
         Employee my = (Employee)request.getSession().getAttribute("login_employee");
 
+        try{
+            Follow follows = (Follow)em.createNamedQuery("getMyFollowsCount", Follow.class)
+                    .setParameter("followEmployee", my)
+                    .setParameter("followerEmployee", e)
+                    .getSingleResult();
+             request.setAttribute("follows",follows);
+        }
+        catch (NoResultException e2){
+            System.out.println("0件です");
+        }finally{
+            em.close();
+        }
 
-        long follows_count = (long)em.createNamedQuery("getMyFollowsCount", Long.class)
-                .setParameter("followEmployee", my)
-                .setParameter("followerEmployee", e)
-                .getSingleResult();
-
-        em.close();
 
         request.setAttribute("employee", e);
-        request.setAttribute("follows_count",follows_count);
+
 
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/employees/show.jsp");
         rd.forward(request, response);

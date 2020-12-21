@@ -19,7 +19,7 @@ import javax.persistence.Table;
         ),
     @NamedQuery(
             name = "getMyFollowsCount",
-            query = "SELECT COUNT(f) FROM Follow AS f WHERE f.followEmployee = :followEmployee and f.followerEmployee = :followerEmployee"
+            query = "SELECT f FROM Follow AS f WHERE f.followEmployee = :followEmployee and f.followerEmployee = :followerEmployee"
         )
     })
 

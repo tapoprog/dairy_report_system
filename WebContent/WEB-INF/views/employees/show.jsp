@@ -43,19 +43,22 @@
                         <tr>
                             <th>
                                 <c:choose>
-                                    <c:when test = "${follows_count > 0}">
-                                        <form method="POST" action="<c:url value='/follows/destroy' />">
-                                            <button type="submit">フォロー中</button>
-                                        </form>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <form method="POST" action="<c:url value='/follows/create' />">
-                                            <input type="hidden" name="employeeId" value="${employee.id}" />
-                                            <input type="hidden" name="_token" value="${_token}" />
-                                            <button type="submit">フォロー</button>
-                                         </form>
-                                     </c:otherwise>
-                                 </c:choose>
+                                            <c:when test = "${follows != null}">
+                                                <form method="POST" action="<c:url value='/follows/destroy' />">
+                                                    <input type="hidden" name="_token" value="${_token}" />
+                                                    <input type="hidden" name="follow_id" value="${follows.id}" />
+                                                    <input type="hidden" name="employeeId" value="${employee.id}" />
+                                                    <button type="submit" onclick="return confirm('フォローを外しますか？');">フォロー中</button>
+                                                </form>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <form method="POST" action="<c:url value='/follows/create' />">
+                                                    <input type="hidden" name="employeeId" value="${employee.id}" />
+                                                    <input type="hidden" name="_token" value="${_token}" />
+                                                    <button type="submit">フォロー</button>
+                                                </form>
+                                            </c:otherwise>
+                                        </c:choose>
                             </th>
                             <td>
                                 <a href="<c:url value='/follows/index' />">フォローリスト</a>

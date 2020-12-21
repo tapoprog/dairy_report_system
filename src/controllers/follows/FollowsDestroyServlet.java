@@ -13,32 +13,38 @@ import models.Employee;
 import models.Follow;
 import utils.DBUtil;
 
-@WebServlet("/follows/create")
-public class FollowsCreateServlet extends HttpServlet {
+
+@WebServlet("/follows/destroy")
+public class FollowsDestroyServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    public FollowsCreateServlet() {
+
+    public FollowsDestroyServlet() {
         super();
     }
 
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String _token = request.getParameter("_token");
+        String _token = (String)request.getParameter("_token");
         if(_token != null && _token.equals(request.getSession().getId())) {
             EntityManager em = DBUtil.createEntityManager();
 
-            Follow f = new Follow();
-
-            f.setFollowEmployee((Employee)request.getSession().getAttribute("login_employee"));
-
             Employee e = em.find(Employee.class, Integer.parseInt(request.getParameter("employeeId")));
-            f.setFollowerEmployee(e);
+
+            // Integer型でパラメータを受け取る
+            Integer f = Integer.valueOf(request.getParameter("follow_id"));
+            // それを使ってSQL実施、情報を取り出す
+            Follow a = em.find(Follow.class,f);
 
             em.getTransaction().begin();
-            em.persist(f);
+            em.remove(a);       // データ削除
             em.getTransaction().commit();
             em.close();
+
+            request.getSession().removeAttribute("follow_id");
 
             response.sendRedirect(request.getContextPath() + "/employees/show?id="+ e.getId());
         }
     }
+
 }
