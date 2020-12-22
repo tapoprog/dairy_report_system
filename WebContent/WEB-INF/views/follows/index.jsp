@@ -2,16 +2,40 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="../layout/app.jsp">
     <c:param name="content">
-        <h2>フォローリスト</h2>
-        <ul>
-            <c:forEach var="follow" items="${follows}">
-                <li>
-                        <c:out value="${employee.id}" />
-                </li>
-            </c:forEach>
-        </ul>
+        <h2>${employee.name}のフォローリスト</h2>
+        <table id="follow_list">
+            <tbody>
+                <tr>
+                    <th class="follow_code">社員番号</th>
+                    <th class="follow_name">氏名</th>
+                    <th class="follow_action">操作</th>
+                </tr>
+                <c:forEach var="follow" items="${follows}" varStatus="status">
+                    <tr class="row${status.count % 2}">
+                        <td class="follow_code"><c:out value="${follow.followerEmployee.code}" /></td>
+                        <td class="follow_name"><c:out value="${follow.followerEmployee.name}" /></td>
+                        <td class="follow_action"><a href="<c:url value='/employees/show?id=${follow.followerEmployee.id}' />">詳細を表示</a></td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
 
-        <a href="<c:url value='/employees/show?id=${employee.id}' />">詳細ページへ戻る</a>
+        <div id="pagination">
+            （全 ${follows_count}名）<br />
+            <c:forEach var="i" begin="1" end="${((follows_count - 1) / 15) + 1}" step="1">
+                <c:choose>
+                    <c:when test="${i == page}">
+                        <c:out value="${i}" />&nbsp;
+                    </c:when>
+                    <c:otherwise>
+                        <a href="<c:url value='/follows/index?page=${i}' />"><c:out value="${i}" /></a>&nbsp;
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+        </div>
+
+
+        <p><a href="<c:url value='/employees/show?id=${employee.id}' />">${employee.name}さんの詳細ページへ戻る</a></p>
 
     </c:param>
 </c:import>

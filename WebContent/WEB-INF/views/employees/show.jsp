@@ -6,7 +6,7 @@
         <c:choose>
             <c:when test="${employee != null}">
                 <h2>
-                    id : ${employee.id} の従業員情報　詳細ページ
+                    ${employee.name} の従業員情報　詳細ページ
                 </h2>
 
                 <table>
@@ -43,6 +43,11 @@
                         <tr>
                             <th>
                                 <c:choose>
+                                    <c:when test="${employee.id == loginEmployee.id}">
+                                        <a>ログイン中</a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:choose>
                                             <c:when test = "${follows != null}">
                                                 <form method="POST" action="<c:url value='/follows/destroy' />">
                                                     <input type="hidden" name="_token" value="${_token}" />
@@ -59,10 +64,12 @@
                                                 </form>
                                             </c:otherwise>
                                         </c:choose>
+                                    </c:otherwise>
+                                </c:choose>
                             </th>
                             <td>
-                                <a href="<c:url value='/follows/index' />">フォローリスト</a>
-                                /<a href="<c:url value='/followers/index' />">フォロワーリスト</a>
+                                <a href="<c:url value='/follows/index?id=${employee.id}' />">フォローリスト</a>
+                                /<a href="<c:url value='/followers/index?id=${employee.id}' />">フォロワーリスト</a>
                             </td>
                         </tr>
                     </tbody>

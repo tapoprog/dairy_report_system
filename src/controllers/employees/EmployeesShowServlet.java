@@ -34,10 +34,11 @@ public class EmployeesShowServlet extends HttpServlet {
         Employee my = (Employee)request.getSession().getAttribute("login_employee");
 
         try{
-            Follow follows = (Follow)em.createNamedQuery("getMyFollowsCount", Follow.class)
+            Follow follows = (Follow)em.createNamedQuery("getMyFollow", Follow.class)
                     .setParameter("followEmployee", my)
                     .setParameter("followerEmployee", e)
                     .getSingleResult();
+
              request.setAttribute("follows",follows);
         }
         catch (NoResultException e2){
@@ -48,6 +49,7 @@ public class EmployeesShowServlet extends HttpServlet {
 
 
         request.setAttribute("employee", e);
+        request.setAttribute("loginEmployee", my);
 
 
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/employees/show.jsp");

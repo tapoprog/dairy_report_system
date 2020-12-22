@@ -14,14 +14,27 @@ import javax.persistence.Table;
 @Table(name = "follows")
 @NamedQueries({
     @NamedQuery(
-            name = "getAllFollows",
-            query = "SELECT f FROM Follow AS f ORDER BY f.id DESC"
+            name = "getMyFollow",
+            query = "SELECT f FROM Follow AS f WHERE f.followEmployee = :followEmployee and f.followerEmployee = :followerEmployee"
         ),
     @NamedQuery(
+            name = "getMyAllFollows",
+            query = "SELECT f FROM Follow AS f WHERE f.followEmployee = :followEmployee ORDER BY f.id DESC"
+            ),
+    @NamedQuery(
             name = "getMyFollowsCount",
-            query = "SELECT f FROM Follow AS f WHERE f.followEmployee = :followEmployee and f.followerEmployee = :followerEmployee"
-        )
-    })
+            query = "SELECT COUNT(f) FROM Follow AS f WHERE f.followEmployee = :followEmployee"
+            ),
+    @NamedQuery(
+            name = "getMyAllFollowers",
+            query = "SELECT f FROM Follow AS f WHERE f.followerEmployee = :followerEmployee ORDER BY f.id DESC"
+            ),
+    @NamedQuery(
+            name = "getMyFollowersCount",
+            query = "SELECT COUNT(f) FROM Follow AS f WHERE f.followerEmployee = :followerEmployee"
+            ),
+
+})
 
 @Entity
 public class Follow {

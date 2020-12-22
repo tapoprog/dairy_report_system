@@ -1,4 +1,4 @@
-package controllers.follows;
+package controllers.followers;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,12 +16,12 @@ import models.Follow;
 import utils.DBUtil;
 
 
-@WebServlet("/follows/index")
-public class FollowsIndexServlet extends HttpServlet {
+@WebServlet("/followers/index")
+public class FollowersIndexServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
 
-    public FollowsIndexServlet() {
+    public FollowersIndexServlet() {
         super();
     }
 
@@ -37,24 +37,24 @@ public class FollowsIndexServlet extends HttpServlet {
         } catch(Exception e2) {
             page = 1;
         }
-        List<Follow> follows = em.createNamedQuery("getMyAllFollows", Follow.class)
-                    .setParameter("followEmployee",e)
+        List<Follow> followers = em.createNamedQuery("getMyAllFollowers", Follow.class)
+                    .setParameter("followerEmployee",e)
                     .setFirstResult(15 * (page - 1))
                     .setMaxResults(15)
                     .getResultList();
 
-        long follows_count = (long)em.createNamedQuery("getMyFollowsCount", Long.class)
-                                    .setParameter("followEmployee", e)
+        long followers_count = (long)em.createNamedQuery("getMyFollowersCount", Long.class)
+                                    .setParameter("followerEmployee", e)
                                     .getSingleResult();
 
         em.close();
 
         request.setAttribute("employee",e);
-        request.setAttribute("follows", follows);
-        request.setAttribute("follows_count", follows_count);
+        request.setAttribute("followers", followers);
+        request.setAttribute("followers_count", followers_count);
         request.setAttribute("page", page);
 
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/follows/index.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/followers/index.jsp");
         rd.forward(request, response);
     }
 
