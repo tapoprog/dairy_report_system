@@ -35,9 +35,9 @@ public class EmployeesShowServlet extends HttpServlet {
 
         try{
             Follow follows = (Follow)em.createNamedQuery("getMyFollow", Follow.class)
-                    .setParameter("followEmployee", my)
-                    .setParameter("followerEmployee", e)
-                    .getSingleResult();
+                                       .setParameter("followEmployee", my)
+                                       .setParameter("followerEmployee", e)
+                                       .getSingleResult();
 
              request.setAttribute("follows",follows);
         }
