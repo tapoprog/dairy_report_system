@@ -72,6 +72,9 @@
                                 /<a href="<c:url value='/followers/index?id=${employee.id}' />">フォロワーリスト</a>
                             </td>
                         </tr>
+                        <tr>
+                        	<th><a href="<c:url value='/goods/index?id=${employee.id}' />">いいねリスト</a></th>
+                        </tr>
                     </tbody>
                 </table>
 

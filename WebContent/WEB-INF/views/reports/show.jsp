@@ -5,23 +5,13 @@
     <c:param name="content">
         <c:choose>
             <c:when test="${report != null}">
-                <h2>日報　詳細ページ</h2>
+                <h2>日報詳細ページ</h2>
 
                 <table>
                     <tbody>
                         <tr>
                             <th>氏名</th>
                             <td><c:out value="${report.employee.name}" /></td>
-                        </tr>
-                        <tr>
-                            <th>日付</th>
-                            <td><fmt:formatDate value="${report.report_date}" pattern="yyyy-MM-dd" /></td>
-                        </tr>
-                        <tr>
-                            <th>内容</th>
-                            <td>
-                                <pre><c:out value="${report.content}" /></pre>
-                            </td>
                         </tr>
                         <tr>
                             <th>登録日時</th>
@@ -33,6 +23,15 @@
                             <th>更新日時</th>
                             <td>
                                 <fmt:formatDate value="${report.updated_at}" pattern="yyyy-MM-dd HH:mm:ss" />
+                            </td>
+                        </tr>
+                        <tr>
+                        	<th>タイトル</th>
+                        	<td>${report.title}</td>
+                        <tr>
+                            <th>内容</th>
+                            <td>
+                                <pre><c:out value="${report.content}" /></pre>
                             </td>
                         </tr>
                     </tbody>
@@ -47,6 +46,23 @@
             </c:otherwise>
         </c:choose>
 
+		<c:choose>
+        	<c:when test = "${goods != null}">
+           		<form method="POST" action="<c:url value='/goods/destroy' />">
+           			<input type="hidden" name="_token" value="${_token}" />
+            		<input type="hidden" name="good_id" value="${goods.id}" />
+            		<input type="hidden" name="report_id" value="${report.id}" />
+            		<button type="submit">♥</button>
+            	</form>
+            </c:when>
+            <c:otherwise>
+          		<form method="POST" action="<c:url value='/goods/create' />">
+                	<input type="hidden" name="reportId" value="${report.id}" />
+                	<input type="hidden" name="_token" value="${_token}" />
+                	<button type="submit">♡</button>
+                </form>
+            </c:otherwise>
+        </c:choose>
         <p><a href="<c:url value="/reports/index" />">一覧に戻る</a></p>
     </c:param>
 </c:import>
